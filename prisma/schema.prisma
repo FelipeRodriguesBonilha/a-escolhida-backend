@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model State {
+  uuid_state    String   @default(uuid()) @id
+  description   String
+  cities        City[]
+}
+
+model City {
+  uuid_city     String   @default(uuid()) @id
+  description   String
+  state         State    @relation(fields: [uuid_state], references: [uuid_state])
+  uuid_state    String
+  users         User[]
+}
+
+model User {
+  uuid_user     String   @default(uuid()) @id
+  email         String   @unique
+  name          String 
+  phone         String   @unique
+  cpf           String   @unique
+  password      String   @unique
+  city          City     @relation(fields: [uuid_city], references: [uuid_city])
+  uuid_city     String
+  carts         Cart[]
+}
+
+model Supplier {
+  uuid_supplier String   @default(uuid()) @id
+  description   String
+  cnpj          String   @unique
+  phone         String   @unique
+  email         String   @unique
+  products      Product[]
+}
+
+model Category {
+  uuid_category String   @default(uuid()) @id
+  description   String
+  products      Product[]
+}
+
+model Product {
+  uuid_product    String   @default(uuid()) @id
+  description     String
+  stock_quantity  Int      @default(0)
+  sold_amount     Int      @default(0)
+  price           Float
+  image_url       String   
+  category        Category @relation(fields: [uuid_category], references: [uuid_category])
+  uuid_category   String
+  supplier        Supplier @relation(fields: [uuid_supplier], references: [uuid_supplier])
+  uuid_supplier   String
+  cart_products   CartProduct[]
+}
+
+model Cart {
+  uuid_cart       String       @default(uuid()) @id
+  user            User         @relation(fields: [uuid_user], references: [uuid_user])
+  uuid_user       String
+  cart_products   CartProduct[]
+  orders          Order[]     
+}
+
+model CartProduct {
+  uuid_cart_product   String   @default(uuid()) @id
+  product             Product  @relation(fields: [uuid_product], references: [uuid_product])
+  uuid_product        String
+  cart                Cart     @relation(fields: [uuid_cart], references: [uuid_cart])
+  uuid_cart           String
+}
+
+model Order {
+  uuid_order          String       @default(uuid()) @id
+  cart                Cart         @relation(fields: [uuid_cart], references: [uuid_cart])
+  uuid_cart           String
+}
+
+
