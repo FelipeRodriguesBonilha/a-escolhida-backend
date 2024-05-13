@@ -10,6 +10,8 @@ import { AuthModule } from './auth/auth.module';
 import { StateModule } from './state/state.module';
 import { CityModule } from './city/city.module';
 import { JwtModule } from '@nestjs/jwt';
+import { CartModule } from './cart/cart.module';
+import { CartProductModule } from './cart-product/cart-product.module';
 
 
 @Module({
@@ -22,6 +24,8 @@ import { JwtModule } from '@nestjs/jwt';
     CategoryModule,
     SupplierModule,
     ProductModule,
+    CartModule,
+    CartProductModule,
     UserModule,
     AuthModule,
     JwtModule

@@ -12,13 +12,16 @@ export class CartService {
         private prisma: PrismaService
     ) { }
 
-    async verifyCartActive(addToCart: AddToCart, uuid_user: string): Promise<Cart> {
+    async verifyCartActive(uuid_user: string): Promise<Cart> {
         const cart = await this.prisma.cart.findFirst({
             where: {
                 AND: {
                     uuid_user: uuid_user,
                     active: true,
                 }
+            },
+            include: {
+                cart_products: true
             }
         });
 
@@ -39,9 +42,14 @@ export class CartService {
     }
 
     async addProductToCart(addToCart: AddToCart, uuid_user: string): Promise<CartProduct> {
-        const cart = await this.verifyCartActive(addToCart, uuid_user).catch(() => this.createCart(uuid_user));
+        const cart = await this.verifyCartActive(uuid_user).catch(() => this.createCart(uuid_user));
 
         return this.cartProductService.addProductToCart(addToCart, cart)
+    }
 
+    async getCart(uuid_user: string): Promise<Cart> {
+        const cart = await this.verifyCartActive(uuid_user);
+
+        return cart;
     }
 }

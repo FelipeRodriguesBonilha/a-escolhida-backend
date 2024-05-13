@@ -73,6 +73,7 @@ model Cart {
   user            User         @relation(fields: [uuid_user], references: [uuid_user])
   uuid_user       String
   cart_products   CartProduct[]
+  active          Boolean
   orders          Order[]     
 }
 
@@ -82,6 +83,7 @@ model CartProduct {
   uuid_product        String
   cart                Cart     @relation(fields: [uuid_cart], references: [uuid_cart])
   uuid_cart           String
+  quantity_product    Int
 }
 
 model Order {
