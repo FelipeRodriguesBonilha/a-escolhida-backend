@@ -34,38 +34,48 @@ model User {
   phone         String   @unique
   cpf           String   @unique
   password      String   @unique
+  role          Int      @default(1) 
   city          City     @relation(fields: [uuid_city], references: [uuid_city])
   uuid_city     String
   carts         Cart[]
+  created_at    DateTime    @default(now())
+  updated_at    DateTime    @default(now()) @updatedAt
 }
 
 model Supplier {
-  uuid_supplier String   @default(uuid()) @id
+  uuid_supplier String      @default(uuid()) @id
   description   String
-  cnpj          String   @unique
-  phone         String   @unique
-  email         String   @unique
+  cnpj          String      @unique
+  phone         String      @unique
+  email         String      @unique
   products      Product[]
+  created_at    DateTime    @default(now())
+  updated_at    DateTime    @default(now()) @updatedAt
 }
 
 model Category {
-  uuid_category String   @default(uuid()) @id
+  uuid_category String        @default(uuid()) @id
   description   String
   products      Product[]
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @default(now()) @updatedAt
 }
 
 model Product {
-  uuid_product    String   @default(uuid()) @id
+  uuid_product    String      @default(uuid()) @id
   description     String
-  stock_quantity  Int      @default(0)
-  sold_amount     Int      @default(0)
+  stock_quantity  Int         @default(0)
+  sold_amount     Int         @default(0)
   price           Float
   image_url       String   
-  category        Category @relation(fields: [uuid_category], references: [uuid_category])
+  category        Category    @relation(fields: [uuid_category], references: [uuid_category])
   uuid_category   String
-  supplier        Supplier @relation(fields: [uuid_supplier], references: [uuid_supplier])
+  supplier        Supplier    @relation(fields: [uuid_supplier], references: [uuid_supplier])
   uuid_supplier   String
+  likes           Int         @default(0)
   cart_products   CartProduct[]
+  created_at      DateTime    @default(now())
+  updated_at      DateTime    @default(now()) @updatedAt
 }
 
 model Cart {
@@ -75,21 +85,27 @@ model Cart {
   cart_products   CartProduct[]
   active          Boolean
   orders          Order[]     
+  created_at      DateTime     @default(now())
+  updated_at      DateTime     @default(now()) @updatedAt
 }
 
 model CartProduct {
-  uuid_cart_product   String   @default(uuid()) @id
-  product             Product  @relation(fields: [uuid_product], references: [uuid_product])
+  uuid_cart_product   String       @default(uuid()) @id
+  product             Product      @relation(fields: [uuid_product], references: [uuid_product])
   uuid_product        String
-  cart                Cart     @relation(fields: [uuid_cart], references: [uuid_cart])
+  cart                Cart         @relation(fields: [uuid_cart], references: [uuid_cart])
   uuid_cart           String
   quantity_product    Int
+  created_at          DateTime     @default(now()) 
+  updated_at          DateTime     @default(now()) @updatedAt
 }
 
 model Order {
   uuid_order          String       @default(uuid()) @id
   cart                Cart         @relation(fields: [uuid_cart], references: [uuid_cart])
   uuid_cart           String
+  created_at          DateTime     @default(now())
+  updated_at          DateTime     @default(now()) @updatedAt
 }
 
 

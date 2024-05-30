@@ -44,10 +44,10 @@ export class CartProductService {
         } else {
             return await this.prisma.cartProduct.update({
                 where: {
-                    uuid_cart_product: productInCart.uuid_cart_product
+                    uuid_cart_product: productInCart.uuid_cart_product,
                 },
                 data: {
-                    quantity_product: productInCart.quantity_product + addToCart.quantity_product ,
+                    quantity_product: productInCart.quantity_product + addToCart.quantity_product,
                 },
                 include: {
                     cart: true,

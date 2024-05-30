@@ -9,6 +9,8 @@ export interface ReturnProductDto {
     image_url: string,
     category: Category,
     supplier: Supplier,
+    created_at: Date,
+    updated_at: Date
     //uuid_category: string,
     //uuid_supplier: string,
 }

@@ -12,12 +12,21 @@ import { CityModule } from './city/city.module';
 import { JwtModule } from '@nestjs/jwt';
 import { CartModule } from './cart/cart.module';
 import { CartProductModule } from './cart-product/cart-product.module';
+import { APP_GUARD } from '@nestjs/core';
+import { RolesGuard } from './guards/roles.guard';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { CorreiosModule } from './correios/correios.module';
 
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: ['.env.development.local'],
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads', 
     }),
     StateModule,
     CityModule,
@@ -28,9 +37,15 @@ import { CartProductModule } from './cart-product/cart-product.module';
     CartProductModule,
     UserModule,
     AuthModule,
+    CorreiosModule,
     JwtModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule { }

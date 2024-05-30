@@ -12,6 +12,7 @@ export class ProductService {
         private prisma: PrismaService
     ) { }
 
+    
     async createProduct(image: Express.Multer.File, createProductDto: CreateProductDto): Promise<ReturnProductDto> {
         try {
             if (!image) {
@@ -52,7 +53,9 @@ export class ProductService {
                 price: product.price,
                 image_url: product.image_url,
                 category: product.category,
-                supplier: product.supplier
+                supplier: product.supplier,
+                created_at: product.created_at,
+                updated_at: product.updated_at
             };
 
 
@@ -72,5 +75,43 @@ export class ProductService {
             }
         })
     }
+
+    async getHighlights(): Promise<ReturnProductDto[]> {
+        const topProducts = await this.prisma.product.findMany({
+            orderBy: [
+                {
+                    likes: 'desc'
+                },
+                {
+                    created_at: 'asc'
+                }
+            ],
+            include: {
+                category: true,
+                supplier: true
+            },
+            take: 18
+        });
+    
+        return topProducts;
+    }
+
+    async likeProduct(uuid_product: string): Promise<ReturnProductDto> {
+        return await this.prisma.product.update({
+            where: {
+                uuid_product
+            },
+            data: {
+                likes: {
+                    increment: 1
+                }
+            },
+            include: {
+                category: true,
+                supplier: true
+            }
+        });
+    }
+
 }
 

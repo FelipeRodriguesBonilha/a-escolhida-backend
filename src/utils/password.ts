@@ -7,5 +7,12 @@ export const createPasswordHashed = async (password: string): Promise<string> =>
 }
 
 export const validatePassword = async (password: string, passwordHashed: string): Promise<Boolean> => {
-    return compare(password, passwordHashed);
+    console.log('password', password)
+    try {
+        const match = await compare(password, passwordHashed);
+        return match;
+    } catch (error) {
+        console.error('Erro ao comparar senhas');
+        return false;
+    }
 }
