@@ -17,6 +17,8 @@ import { RolesGuard } from './guards/roles.guard';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { CorreiosModule } from './correios/correios.module';
+import { SendEmailModule } from './send-email/send-email.module';
+import { SeedsModule } from './seeds/seeds.module';
 
 
 @Module({
@@ -38,7 +40,9 @@ import { CorreiosModule } from './correios/correios.module';
     UserModule,
     AuthModule,
     CorreiosModule,
-    JwtModule
+    SendEmailModule,
+    SeedsModule,
+    JwtModule,
   ],
   controllers: [AppController],
   providers: [AppService,

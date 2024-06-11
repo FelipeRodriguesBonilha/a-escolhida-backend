@@ -4,5 +4,6 @@ export interface CreateUserDto {
     phone: string,
     cpf: string,   
     password: string,
-    uuid_city: string
+    uuid_city: string,
+    role?: number
 }

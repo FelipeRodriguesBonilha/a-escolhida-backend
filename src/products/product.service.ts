@@ -57,8 +57,6 @@ export class ProductService {
                 created_at: product.created_at,
                 updated_at: product.updated_at
             };
-
-
         } catch (error) {
             throw new HttpException(`Erro ao criar o produto: ${error.message}`, HttpStatus.BAD_REQUEST);
         }
@@ -90,7 +88,7 @@ export class ProductService {
                 category: true,
                 supplier: true
             },
-            take: 18
+            take: 12
         });
     
         return topProducts;

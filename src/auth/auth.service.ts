@@ -31,7 +31,8 @@ export class AuthService {
             cpf: user.cpf,
             email: user.email,
             phone: user.phone,
-            uuid_city: user.uuid_city
+            uuid_city: user.uuid_city,
+            role: user.role,
         }
         
         return {

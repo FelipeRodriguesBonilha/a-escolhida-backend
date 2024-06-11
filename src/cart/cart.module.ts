@@ -8,6 +8,6 @@ import { CartProductModule } from 'src/cart-product/cart-product.module';
     imports: [CartProductModule],
     controllers: [CartController],
     providers: [PrismaService, CartService],
-    exports: [],
+    exports: [CartService],
 })
 export class CartModule {}

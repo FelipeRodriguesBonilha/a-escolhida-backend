@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { AddToCart } from './dtos/addToCart.dto';
 import { Cart, CartProduct } from '@prisma/client';
 import { CartProductService } from 'src/cart-product/cart-product.service';
+import { RemoveToCart } from './dtos/removeToCart.dto';
 
 @Injectable()
 export class CartService {
@@ -21,8 +22,16 @@ export class CartService {
                 }
             },
             include: {
-                cart_products: true
-            }
+                cart_products: {
+                    include: {
+                        product: {
+                            include: {
+                                category: true,
+                            },
+                        },
+                    },
+                },
+            },
         });
 
         if(!cart){
@@ -51,5 +60,17 @@ export class CartService {
         const cart = await this.verifyCartActive(uuid_user);
 
         return cart;
+    }
+
+    async removeProductToCart(removeToCart: RemoveToCart, uuid_user: string): Promise<CartProduct> {
+        const cart = await this.verifyCartActive(uuid_user);
+
+        return this.cartProductService.removeProductToCart(removeToCart, cart)
+    }
+
+    async removeAllProductsToCart(uuid_user: string): Promise<{ count: number }> {
+        const cart = await this.verifyCartActive(uuid_user);
+
+        return this.cartProductService.removeAllProductsToCart(cart);
     }
 }
